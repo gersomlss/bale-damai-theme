@@ -50,7 +50,7 @@
     .search-field { padding:7px 16px; border-right:1px solid var(--line); min-width:0; }
     .search-field label { display:block; text-transform:uppercase; font-size:9px; font-weight:700; letter-spacing:.1em; color:#66757a; margin-bottom:4px; }
     .search-field input { width:100%; border:0; outline:0; background:transparent; font-size:13px; color:var(--ink); padding:0; }
-    .search-field input::placeholder { color:#939da0; }
+    .search-field input::placeholder { color:#939da0; }.date-range-field { position:relative; z-index:5; }.date-range-trigger { display:flex; width:100%; align-items:center; justify-content:space-between; gap:8px; padding:0; border:0; background:transparent; color:#879397; text-align:left; font-size:13px; }.date-range-trigger.has-dates { color:var(--ink); }.date-range-trigger svg { flex:none; color:#63757b; }.date-range-popover { position:absolute; z-index:35; top:calc(100% + 14px); left:50%; transform:translateX(-50%); width:340px; padding:18px; border:1px solid rgba(31,68,80,.09); border-radius:16px; background:#fff; box-shadow:0 18px 44px rgba(22,58,71,.18); }.date-range-popover[hidden] { display:none; }.date-range-popover h3 { margin:0 0 5px; color:var(--ink); font-size:15px; font-weight:700; letter-spacing:0; text-transform:none; }.date-range-popover p { margin:0 0 15px; color:#788488; font-size:12px; line-height:1.5; }.date-range-inputs { display:grid; grid-template-columns:1fr 1fr; gap:10px; }.date-range-inputs label { display:block; margin:0 0 5px; color:#63757b; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }.date-range-inputs input { width:100%; min-height:42px; padding:8px 9px; border:1px solid #dfe6e5; border-radius:9px; background:#fff; color:var(--ink); font-size:12px; }.date-range-inputs input:focus { border-color:var(--blue); outline:2px solid rgba(20,123,168,.12); }.date-range-actions { display:flex; justify-content:flex-end; margin-top:14px; }.date-range-done { padding:9px 16px; border:0; border-radius:9px; background:var(--blue); color:#fff; font-size:12px; font-weight:700; }.date-range-done:hover { background:var(--blue-deep); }
     .search-panel { position:relative; z-index:10; }
     .destination-field { position:relative; z-index:4; }
     .destination-suggestions { position:absolute; z-index:30; top:calc(100% + 10px); left:-4px; width:min(350px, calc(100vw - 48px)); max-height:min(280px, 42vh); overflow-y:auto; padding:6px; border:1px solid rgba(31,68,80,.09); border-radius:14px; background:#fff; box-shadow:0 16px 38px rgba(22,58,71,.16); }
@@ -99,7 +99,11 @@
     .card { min-width:0; cursor:pointer; }
     .card-photo-wrap { position:relative; overflow:hidden; border-radius:4px 30px 4px 4px; aspect-ratio:1.24/1; background:#e5e9e5; }
     .card-photo { display:block; width:100%; height:100%; object-fit:cover; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+    .photo-gallery { touch-action:pan-y; user-select:none; -webkit-user-select:none; cursor:grab; }
+    .photo-gallery.is-dragging { cursor:grabbing; }
+    .photo-gallery .card-photo { pointer-events:none; }
     .card:hover .card-photo { transform:scale(1.045); }
+    .card:hover .photo-gallery .card-photo { transform:none; }
     .card-tag { position:absolute; left:12px; top:12px; font-size:9px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; background:rgba(255,255,255,.93); padding:7px 9px; border-radius:2px; color:#46606a; }
     .heart { position:absolute; right:11px; top:10px; color:white; background:rgba(20,35,42,.23); border:1px solid rgba(255,255,255,.55); width:32px; height:32px; border-radius:50%; font-size:17px; line-height:1; display:grid; place-items:center; backdrop-filter:blur(4px); transition:all .2s; }
     .heart:hover,.heart.saved { background:white; color:#d2645b; }
@@ -112,9 +116,11 @@
     .card-rating strong { color:var(--ink); font-size:12px; }
     .google-link { color:inherit; text-decoration:none; }
     .google-link:hover { text-decoration:underline; }
-    .mini-gallery-controls { position:absolute; inset:auto 10px 10px; display:flex; justify-content:center; gap:5px; z-index:2; }
-    .mini-gallery-dot { width:6px; height:6px; padding:0; border:0; border-radius:50%; background:rgba(255,255,255,.62); box-shadow:0 1px 4px rgba(0,0,0,.25); }
-    .mini-gallery-dot.is-active { width:17px; border-radius:8px; background:#fff; }
+    .mini-gallery-controls { position:absolute; inset:auto 7px 7px; display:flex; justify-content:center; gap:1px; z-index:2; }
+    .mini-gallery-dot { width:25px; height:26px; padding:0; display:grid; place-items:center; border:0; border-radius:50%; background:transparent; }
+    .mini-gallery-dot:before { content:""; width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.74); box-shadow:0 1px 4px rgba(0,0,0,.35); transition:all .18s; }
+    .mini-gallery-dot.is-active:before { width:17px; border-radius:8px; background:#fff; }
+    .mini-gallery-count { position:absolute; z-index:2; right:48px; top:12px; padding:5px 7px; border-radius:12px; background:rgba(18,31,35,.54); color:#fff; font-size:9px; font-weight:600; letter-spacing:.02em; }
     .card-location,.card-meta { font-size:11px; color:#758084; margin:5px 0 0; }
     .card-price { margin-top:9px; font-size:12px; font-weight:600; color:#34454b; }
     .card-price span { font-weight:400; color:#7a8588; }
@@ -143,7 +149,7 @@
     .collection-card { min-width:0; border:1px solid var(--line); background:#fff; border-radius:9px; overflow:hidden; }
     .collection-collage { height:245px; display:grid; grid-template-columns:1.45fr 1fr; grid-template-rows:1fr 1fr; gap:4px; background:#fff; }
     .collection-collage img { display:block; width:100%; height:100%; min-height:0; object-fit:cover; }
-    .collection-collage img:first-child { grid-row:1 / 3; }
+    .collection-collage img:first-child { grid-row:1 / 3; } .collection-collage.two-photo-collage { grid-template-columns:1fr 1fr; grid-template-rows:1fr; }.collection-collage.two-photo-collage img:first-child { grid-row:1; }
     .collection-copy { padding:20px 21px 21px; }
     .collection-copy .section-kicker { margin-bottom:7px; }
     .collection-copy h3 { margin:0 0 7px; font-size:22px; }
@@ -185,7 +191,7 @@
       .nav { display:none; position:absolute; top:69px; left:0; right:0; height:auto; background:var(--paper); padding:10px 21px 18px; border-bottom:1px solid var(--line); flex-direction:column; align-items:stretch; gap:0; box-shadow:0 12px 18px rgba(20,45,50,.07); }
       .nav.open { display:flex; }.nav a { height:auto; padding:13px 2px; border-bottom:1px solid var(--line); }.nav a.active:after { display:none; }
       .hero { padding:36px 20px 35px; }.hero-inner { display:flex; flex-direction:column; align-items:stretch; gap:28px; }.hero-copy { font-size:14px; }.hero-visual { margin:0 7px 0 12px; }.hero-photo-stage { height:280px; }.hero-rating { gap:6px; padding:9px 10px; }.hero-rating-stars { font-size:11px; letter-spacing:0; }.hero-rating-count { font-size:9px; }.hero-rating-cta { font-size:9px; }.accent-dot { width:62px; height:62px; right:-15px; top:-15px; }
-      .search-panel { margin-top:23px; grid-template-columns:minmax(0,1fr) minmax(0,1fr) 52px; gap:0; padding:7px; }.search-field { padding:7px 9px; }.search-field:first-child { grid-column:1 / -1; border-right:0; border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:5px; }.search-field:nth-child(3) { border-right:0; }.search-submit { width:42px; height:42px; }
+      .search-panel { margin-top:23px; grid-template-columns:minmax(0,1fr) minmax(0,1fr) 52px; gap:0; padding:7px; }.search-field { padding:7px 9px; }.search-field:first-child { grid-column:1 / -1; border-right:0; border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:5px; }.search-field:nth-child(3) { border-right:0; }.date-range-popover { left:0; transform:none; width:min(340px, calc(100vw - 48px)); }.date-range-inputs { grid-template-columns:1fr; gap:10px; }.search-submit { width:42px; height:42px; }
       .section { padding:38px 20px; }.section-head { align-items:flex-start; }.section-head .text-link { margin-top:14px; }.listing-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px 12px; }.card-photo-wrap { border-radius:3px 21px 3px 3px; aspect-ratio:1/1; }.card-tag { left:8px; top:8px; font-size:8px; padding:6px 7px; }.heart { right:8px; top:8px; width:30px; height:30px; }.card-title { font-size:12px; }.card-location,.card-meta { font-size:10px; }.card-price { font-size:11px; }
       .explore-section { margin:0 0 34px; padding:22px 20px 0; }.explore-head { align-items:flex-start; }.gallery-tools { display:none; }.place-rail { grid-auto-columns:minmax(190px,68vw); gap:12px; }.place-photo { height:145px; }.collection-grid { grid-template-columns:1fr; gap:14px; margin-top:30px; }.collection-collage { height:220px; }.collection-copy { padding:17px; }.contact-band { margin:0 20px 28px; padding:25px 22px; flex-direction:column; align-items:flex-start; gap:19px; }.contact-links { justify-content:flex-start; }
       .site-footer { padding:34px 22px 0; }.footer-main { grid-template-columns:1fr 1fr; gap:30px 20px; padding-bottom:27px; }.footer-brand { grid-column:1 / -1; }.footer-brand img { width:170px; }.footer-bottom { flex-direction:column; gap:6px; padding:15px 0 18px; }
@@ -214,8 +220,8 @@
           <h1>Find a place<br />to <em class="rotating-phrase" id="rotatingPhrase">feel at home.</em></h1>
           <p class="hero-copy">Thoughtful homes and gathering spaces, chosen for the moments that bring us closer. Discover a slower, more meaningful stay.</p>
           <form class="search-panel" id="searchForm">
-            <div class="search-field destination-field"><label for="destination">Where</label><input id="destination" type="text" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="list" aria-controls="propertySuggestions" aria-expanded="false" placeholder="Choose a Bale Damai home" /><div class="destination-suggestions" id="propertySuggestions" role="listbox" aria-label="Available properties" hidden></div></div>
-            <div class="search-field"><label for="arrival">When</label><input id="arrival" type="text" placeholder="Add dates" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'" /></div>
+            <div class="search-field destination-field"><label for="destination">Where</label><input id="destination" type="text" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" aria-autocomplete="list" aria-controls="propertySuggestions" aria-expanded="false" placeholder="Choose a Bale Damai property" /><div class="destination-suggestions" id="propertySuggestions" role="listbox" aria-label="Available properties" hidden></div></div>
+            <div class="search-field date-range-field"><label>When</label><button class="date-range-trigger" id="dateRangeTrigger" type="button" aria-expanded="false" aria-controls="dateRangePopover"><span id="dateRangeSummary">Add dates</span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 3.5v3M16.5 3.5v3M4 9h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button><div class="date-range-popover" id="dateRangePopover" hidden><h3>Plan your stay</h3><p>Choose your check-in and check-out dates.</p><div class="date-range-inputs"><div><label for="arrival">Check-in</label><input id="arrival" type="date" aria-label="Check-in date" /></div><div><label for="departure">Check-out</label><input id="departure" type="date" aria-label="Check-out date" /></div></div><div class="date-range-actions"><button class="date-range-done" id="dateRangeDone" type="button">Done</button></div></div></div>
             <div class="search-field"><label for="guests">Who</label><input id="guests" type="text" inputmode="numeric" placeholder="Add guests" /></div>
             <button class="search-submit" type="submit" aria-label="Search properties">⌕</button>
           </form>
@@ -247,7 +253,7 @@
     </section>
     <section class="section" id="stays">
       <div class="section-head">
-        <div><p class="section-kicker">Stay awhile</p><h2>Places to call your own</h2><p class="section-desc">Three distinctive homes, from Bali’s green highlands to the heart of Denpasar.</p></div>
+        <div><p class="section-kicker">Stay awhile</p><h2>Places to call your own</h2><p class="section-desc">A growing collection of stays and gathering spaces across Java and Bali.</p></div>
         <a href="#contact" class="text-link">Explore all stays <span>→</span></a>
       </div>
       <div class="filter-row" role="group" aria-label="Filter properties">
@@ -255,20 +261,27 @@
       </div>
       <div class="listing-grid" id="listingGrid">
         <article class="card" data-url="https://www.airbnb.com/rooms/958257224731528887" data-kind="retreat" data-location="jatiluwih hillside hideaway" tabindex="0" aria-label="Open listing: Jatiluwih Hillside Hideaway">
-          <div class="card-photo-wrap"><img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside-ai-no-fence.jpg' ) ); ?>" alt="AI-enhanced visualization of Jatiluwih Hillside Hideaway, a cabin in Penebel, Bali"/><span class="card-tag">Hillside cabin</span><button class="heart" aria-label="Save Jatiluwih Hillside Hideaway">♡</button></div>
+          <div class="card-photo-wrap photo-gallery" role="group" aria-label="Swipe through Jatiluwih Hillside Hideaway photos" data-gallery-name="Jatiluwih Hillside Hideaway" data-gallery='["<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/01.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/02.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/03.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/04.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/05.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/06.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/08.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/09.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/10.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/11.avif' ) ); ?>"]'><img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside/01.avif' ) ); ?>" alt="Jatiluwih Hillside Hideaway Airbnb gallery photo"/><span class="mini-gallery-count">1 / 10</span><span class="card-tag">Hillside cabin</span><button class="heart" aria-label="Save Jatiluwih Hillside Hideaway">♡</button><div class="mini-gallery-controls" aria-label="Jatiluwih Hillside Hideaway photos"><button class="mini-gallery-dot is-active" type="button" aria-label="Show photo 1 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 2 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 3 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 4 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 5 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 6 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 7 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 8 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 9 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 10 of 10"></button></div></div>
           <div class="card-info"><p class="card-title">Jatiluwih Hillside Hideaway</p><a class="listing-link" href="https://www.airbnb.com/rooms/958257224731528887" target="_blank" rel="noopener">View on Airbnb ↗</a></div><p class="card-rating" aria-label="Rated 5 out of 5, based on 2 Airbnb reviews"><span class="stars" aria-hidden="true">★★★★★</span><strong>5.0</strong><span>· 2 Airbnb reviews</span></p><p class="card-location">Jatiluwih Hillside</p><p class="card-meta">2 guests · 1 bedroom · 1 bed</p>
         </article>
         <article class="card" data-url="https://www.airbnb.com/rooms/1393993223925344101" data-kind="villa family gathering" data-location="sentul eirene villa eirene's lakeside villa" tabindex="0" aria-label="Open listing: Sentul Eirene Villa">
-          <div class="card-photo-wrap"><img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/eirene-lakeside-ai-clean.jpg' ) ); ?>" alt="AI-enhanced visualization of Eirene's Lakeside Villa, a group villa in Babakan Madang"/><span class="card-tag">Room for a group</span><button class="heart" aria-label="Save Eirene's Lakeside Villa">♡</button></div>
+          <div class="card-photo-wrap photo-gallery" role="group" aria-label="Swipe through Sentul Eirene Villa photos" data-gallery-name="Sentul Eirene Villa" data-gallery='["<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/01.webp' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/02.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/03.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/04.webp' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/05.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/06.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/07.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/08.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/09.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/10.avif' ) ); ?>"]'><img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/sentul-eirene-villa/01.webp' ) ); ?>" alt="Sentul Eirene Villa Airbnb gallery photo"/><span class="mini-gallery-count">1 / 10</span><span class="card-tag">Room for a group</span><button class="heart" aria-label="Save Eirene's Lakeside Villa">♡</button><div class="mini-gallery-controls" aria-label="Sentul Eirene Villa photos"><button class="mini-gallery-dot is-active" type="button" aria-label="Show photo 1 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 2 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 3 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 4 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 5 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 6 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 7 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 8 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 9 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 10 of 10"></button></div></div>
           <div class="card-info"><p class="card-title">Sentul Eirene Villa</p><a class="listing-link" href="https://www.airbnb.com/rooms/1393993223925344101" target="_blank" rel="noopener">View on Airbnb ↗</a></div><p class="card-rating" aria-label="Rated 4.67 out of 5, based on 3 Airbnb reviews"><span class="stars" aria-hidden="true">★★★★★</span><strong>4.67</strong><span>· 3 Airbnb reviews</span></p><p class="card-location">Sentul Eirene Villa</p><p class="card-meta">14 guests · 7 bedrooms · 6 beds</p>
         </article>
         <article class="card" data-url="https://www.airbnb.com/rooms/637115227838594568" data-kind="villa family" data-location="denpasar family size villa family size villa in denpasar" tabindex="0" aria-label="Open listing: Denpasar Family Size Villa">
-          <div class="card-photo-wrap"><img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-villa-ai.jpg' ) ); ?>" alt="AI-enhanced visualization of the Family Size Villa in Denpasar kitchen"/><span class="card-tag">Pool · 6 bedrooms</span><button class="heart" aria-label="Save Family Size Villa in Denpasar">♡</button></div>
+          <div class="card-photo-wrap photo-gallery" role="group" aria-label="Swipe through Denpasar Family Size Villa photos" data-gallery-name="Denpasar Family Size Villa" data-gallery='["<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/01-pool.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/02-living-room.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/03-kitchen.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/04-bedroom-1.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/05-bedroom-2.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/06-bedroom-3.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/07-bedroom-4.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/08-workspace.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/09-patio.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/10-exterior.avif' ) ); ?>"]'><img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/01-pool.avif' ) ); ?>" alt="Denpasar Family Size Villa Airbnb photo: pool"/><span class="mini-gallery-count">1 / 10</span><span class="card-tag">Pool · 6 bedrooms</span><button class="heart" aria-label="Save Family Size Villa in Denpasar">♡</button><div class="mini-gallery-controls" aria-label="Denpasar Family Size Villa photos"><button class="mini-gallery-dot is-active" type="button" aria-label="Show photo 1 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 2 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 3 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 4 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 5 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 6 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 7 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 8 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 9 of 10"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 10 of 10"></button></div></div>
           <div class="card-info"><p class="card-title">Denpasar Family Size Villa</p><a class="listing-link" href="https://www.airbnb.com/rooms/637115227838594568" target="_blank" rel="noopener">View on Airbnb ↗</a></div><p class="card-rating" aria-label="Rated 5 out of 5, based on 7 Airbnb reviews"><span class="stars" aria-hidden="true">★★★★★</span><strong>5.0</strong><span>· 7 Airbnb reviews</span></p><p class="card-location">Denpasar Family Size Villa</p><p class="card-meta">14 guests · 6 bedrooms · 10 beds</p>
         </article>
-        <article class="card trust-card" data-url="https://www.trustbuildingjakarta.com/" data-kind="gathering workspace" data-location="trust building jakarta central jakarta coworking office" tabindex="0" aria-label="Open listing: Trust Building Jakarta">
-          <div class="card-photo-wrap trust-photo-wrap" data-gallery='["<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-drone-finished.png' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-corridor.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-meeting-room.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-event-space.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-lounge.avif' ) ); ?>"]'>
+        <article class="card" data-url="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Gunung%20Salak%2C%20boleh%20minta%20informasi%3F" data-kind="retreat" data-location="gunung salak forest glamping selemadeg tabanan bali" tabindex="0" aria-label="Ask about Gunung Salak Forest Glamping">
+          <div class="card-photo-wrap photo-gallery" role="group" aria-label="Swipe through Gunung Salak property and location photos" data-gallery-name="Gunung Salak Forest Glamping" data-gallery='["<?php echo esc_url( get_theme_file_uri( '/assets/gunung-salak/01-gunung-salak-aerial.png' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/gunung-salak/02-gunung-salak-site.png' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/gunung-salak/03-gunung-salak-location.png' ) ); ?>"]'><img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/gunung-salak/01-gunung-salak-aerial.png' ) ); ?>" alt="Aerial view of Bale Damai Gunung Salak cabins among dense greenery"/><span class="mini-gallery-count">1 / 3</span><span class="card-tag">Property & location</span><button class="heart" aria-label="Save Gunung Salak Forest Glamping">♡</button><div class="mini-gallery-controls" aria-label="Gunung Salak property and location photos"><button class="mini-gallery-dot is-active" type="button" aria-label="Show photo 1 of 3"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 2 of 3"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 3 of 3"></button></div></div>
+          <div class="card-info"><p class="card-title">Gunung Salak Forest Glamping</p><a class="listing-link" href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Gunung%20Salak%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">Ask on WhatsApp ↗</a></div><p class="card-location">Selemadeg, Tabanan, Bali</p><p class="card-meta">Rainforest setting · Waterfall views · Ask about availability</p>
+        </article>        <article class="card" data-url="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Kerambitan%2C%20boleh%20minta%20informasi%3F" data-kind="retreat" data-location="kerambitan recovery home wellness home tabanan bali" tabindex="0" aria-label="Ask about Kerambitan Recovery Home">
+          <div class="card-photo-wrap photo-gallery" role="group" aria-label="Swipe through Kerambitan property photos" data-gallery-name="Kerambitan Recovery Home" data-gallery='["<?php echo esc_url( get_theme_file_uri( '/assets/kerambitan-recovery-home/01-kerambitan-exterior.png' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/kerambitan-recovery-home/02-kerambitan-home.png' ) ); ?>"]'><img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/kerambitan-recovery-home/01-kerambitan-exterior.png' ) ); ?>" alt="Bale Damai Kerambitan exterior and property information"/><span class="mini-gallery-count">1 / 2</span><span class="card-tag">Recovery home</span><button class="heart" aria-label="Save Kerambitan Recovery Home">♡</button><div class="mini-gallery-controls" aria-label="Kerambitan property photos"><button class="mini-gallery-dot is-active" type="button" aria-label="Show photo 1 of 2"></button><button class="mini-gallery-dot" type="button" aria-label="Show photo 2 of 2"></button></div></div>
+          <div class="card-info"><p class="card-title">Kerambitan Recovery Home</p><a class="listing-link" href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Kerambitan%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">Ask on WhatsApp ↗</a></div><p class="card-location">Kerambitan, Tabanan, Bali</p><p class="card-meta">A calm, homelike setting · Contact for details</p>
+        </article>        <article class="card trust-card" data-url="https://www.trustbuildingjakarta.com/" data-kind="gathering workspace" data-location="trust building jakarta central jakarta coworking office" tabindex="0" aria-label="Open listing: Trust Building Jakarta">
+          <div class="card-photo-wrap trust-photo-wrap photo-gallery" role="group" aria-label="Swipe through Trust Building Jakarta photos" data-gallery-name="Trust Building Jakarta" data-gallery='["<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-jakarta/01-exterior.png' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-jakarta/02-corridor.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-jakarta/03-meeting-room.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-jakarta/04-event-space.avif' ) ); ?>","<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-jakarta/05-lounge.avif' ) ); ?>"]'>
             <img class="card-photo" loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-drone-finished.png' ) ); ?>" alt="Trust Building Jakarta's exterior in Central Jakarta" />
+            <span class="mini-gallery-count">1 / 5</span>
             <span class="card-tag">Coworking · Offices</span>
             <button class="heart" aria-label="Save Trust Building Jakarta">♡</button>
             <div class="mini-gallery-controls" aria-label="Trust Building photos"><button class="mini-gallery-dot is-active" type="button" aria-label="Show Trust Building photo 1"></button><button class="mini-gallery-dot" type="button" aria-label="Show Trust Building photo 2"></button><button class="mini-gallery-dot" type="button" aria-label="Show Trust Building photo 3"></button><button class="mini-gallery-dot" type="button" aria-label="Show Trust Building photo 4"></button><button class="mini-gallery-dot" type="button" aria-label="Show Trust Building photo 5"></button></div>
@@ -285,25 +298,29 @@
       <div class="place-tabs" role="group" aria-label="Filter places"><button class="place-tab is-active" type="button" data-place-filter="all">All places</button><button class="place-tab" type="button" data-place-filter="jakarta">Central Jakarta</button><button class="place-tab" type="button" data-place-filter="denpasar">Denpasar, Bali</button><button class="place-tab" type="button" data-place-filter="bali">Bali retreats</button></div>
       <div class="place-rail" id="placeRail">
         <a class="place-card" data-place="jakarta" href="https://www.trustbuildingjakarta.com/" target="_blank" rel="noopener"><div class="place-photo"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-drone-finished.png' ) ); ?>" alt="Trust Building in Central Jakarta"><span class="place-photo-label">Work, meet, stay</span></div><p class="place-title">Trust Building Jakarta</p><p class="place-subtitle">Central Jakarta · Co-working and co-living</p></a>
-        <a class="place-card" data-place="denpasar" href="https://www.airbnb.com/rooms/637115227838594568" target="_blank" rel="noopener"><div class="place-photo"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-villa-ai.jpg' ) ); ?>" alt="Warm wood kitchen at the Denpasar family villa"><span class="place-photo-label">Room for everyone</span></div><p class="place-title">Denpasar Family Size Villa</p><p class="place-subtitle">Denpasar, Bali · Six bedrooms</p></a>
+        <a class="place-card" data-place="denpasar" href="https://www.airbnb.com/rooms/637115227838594568" target="_blank" rel="noopener"><div class="place-photo"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-family-villa/10-exterior.avif' ) ); ?>" alt="Denpasar family villa exterior"><span class="place-photo-label">Room for everyone</span></div><p class="place-title">Denpasar Family Size Villa</p><p class="place-subtitle">Denpasar, Bali · Six bedrooms</p></a>
         <a class="place-card" data-place="bali" href="https://www.airbnb.com/rooms/958257224731528887" target="_blank" rel="noopener"><div class="place-photo"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/jatiluwih-hillside-ai-no-fence.jpg' ) ); ?>" alt="Hillside hideaway among the green Jatiluwih landscape"><span class="place-photo-label">A slower Bali escape</span></div><p class="place-title">Jatiluwih Hillside Hideaway</p><p class="place-subtitle">Jatiluwih, Bali · Hillside retreat</p></a>
         <a class="place-card" data-place="sentul" href="https://www.airbnb.com/rooms/1393993223925344101" target="_blank" rel="noopener"><div class="place-photo"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/eirene-lakeside-ai-clean.jpg' ) ); ?>" alt="Eirene's Lakeside Villa, a spacious group retreat"><span class="place-photo-label">Gather with your people</span></div><p class="place-title">Sentul Eirene Villa</p><p class="place-subtitle">Sentul, West Java · A group retreat</p></a>
+        <a class="place-card" data-place="bali" href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Gunung%20Salak%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer"><div class="place-photo"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/gunung-salak/01-gunung-salak-aerial.png' ) ); ?>" alt="Aerial view of Bale Damai Gunung Salak cabins among dense greenery"><span class="place-photo-label">Forest setting</span></div><p class="place-title">Gunung Salak Forest Glamping</p><p class="place-subtitle">Gunung Salak, Tabanan, Bali · Rainforest glamping</p></a>
+        <a class="place-card" data-place="bali" href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Kerambitan%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer"><div class="place-photo"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/kerambitan-recovery-home/01-kerambitan-exterior.png' ) ); ?>" alt="Bale Damai Kerambitan exterior and property information"><span class="place-photo-label">Wellness & recovery</span></div><p class="place-title">Kerambitan Recovery Home</p><p class="place-subtitle">Kerambitan, Tabanan, Bali · Recovery home</p></a>
       </div>
       <div class="collection-grid" aria-label="Featured destination photo collections">
         <article class="collection-card" data-place="jakarta"><div class="collection-collage"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-drone-finished.png' ) ); ?>" alt="Aerial view of the completed Trust Building"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-meeting-room.avif' ) ); ?>" alt="Meeting room inside Trust Building"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/trust-building-lounge.avif' ) ); ?>" alt="Shared lounge inside Trust Building"></div><div class="collection-copy"><p class="section-kicker">Central Jakarta</p><h3>Make room to work and connect</h3><p>A practical city base for focused work, shared ideas, and a comfortable stay in the heart of Jakarta.</p><a class="collection-link" href="https://www.trustbuildingjakarta.com/" target="_blank" rel="noopener">Explore Trust Building <span>↗</span></a></div></article>
         <article class="collection-card" data-place="denpasar"><div class="collection-collage"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-villa-ai.jpg' ) ); ?>" alt="Open kitchen at the Denpasar family villa"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-villa-detail-ai.jpg' ) ); ?>" alt="Relaxing living room at the Denpasar villa"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/denpasar-villa-detail.jpg' ) ); ?>" alt="A welcoming detail in the family villa"></div><div class="collection-copy"><p class="section-kicker">Denpasar, Bali</p><h3>Bring everyone under one roof</h3><p>Find generous shared spaces, a welcoming kitchen, and room for family and friends to settle in together.</p><a class="collection-link" href="https://www.airbnb.com/rooms/637115227838594568" target="_blank" rel="noopener">Explore the family villa <span>↗</span></a></div></article>
+        <article class="collection-card" data-place="bali"><div class="collection-collage"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/gunung-salak/01-gunung-salak-aerial.png' ) ); ?>" alt="Aerial view of Bale Damai Gunung Salak cabins among dense greenery"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/gunung-salak/02-gunung-salak-site.png' ) ); ?>" alt="Aerial site view of Bale Damai Gunung Salak grounds and paths"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/gunung-salak/03-gunung-salak-location.png' ) ); ?>" alt="Map showing Bale Damai Gunung Salak and nearby waterfalls"></div><div class="collection-copy"><p class="section-kicker">Selemadeg, Tabanan, Bali</p><h3>A forest stay in Gunung Salak</h3><p>Set among rainforest hills near a waterfall, this glamping retreat is a chance to slow down in nature. See the forest grounds, nearby waterfalls, and location. Contact us for current details and availability.</p><a class="collection-link" href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Gunung%20Salak%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">Ask about Gunung Salak on WhatsApp <span>↗</span></a></div></article>
+        <article class="collection-card" data-place="bali"><div class="collection-collage two-photo-collage"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/kerambitan-recovery-home/01-kerambitan-exterior.png' ) ); ?>" alt="Bale Damai Kerambitan exterior and property information"><img loading="lazy" src="<?php echo esc_url( get_theme_file_uri( '/assets/kerambitan-recovery-home/02-kerambitan-home.png' ) ); ?>" alt="Bale Damai Rumah Pemulihan house and room information"></div><div class="collection-copy"><p class="section-kicker">Kerambitan, Tabanan, Bali</p><h3>A gentler place to reset</h3><p>A warm, shaded, homelike recovery residence in Kerambitan. Contact us for current facilities and support details.</p><a class="collection-link" href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Kerambitan%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">Ask about Kerambitan on WhatsApp <span>↗</span></a></div></article>
       </div>
     </section>
     <section class="contact-band" id="contact" aria-labelledby="contactHeading">
       <div class="contact-copy"><p class="section-kicker">Find your fit</p><h2 id="contactHeading">Where would you like to feel at home?</h2><p>Tell us what you need, and we’ll help connect you with the right Bale Damai property.</p></div>
-      <div class="contact-links" aria-label="Contact us about a property"><a href="mailto:hello@baledamai.com?subject=Ask%20about%20Jatiluwih%20Hillside%20Hideaway">Jatiluwih retreat <span>↗</span></a><a href="mailto:hello@baledamai.com?subject=Ask%20about%20Sentul%20Eirene%20Villa">Sentul villa <span>↗</span></a><a href="mailto:hello@baledamai.com?subject=Ask%20about%20Denpasar%20Family%20Size%20Villa">Denpasar family villa <span>↗</span></a><a href="mailto:hello@baledamai.com?subject=Ask%20about%20Trust%20Building%20Jakarta">Jakarta workspace <span>↗</span></a></div>
+      <div class="contact-links" aria-label="Contact us about a property"><a href="mailto:hello@baledamai.com?subject=Ask%20about%20Jatiluwih%20Hillside%20Hideaway">Jatiluwih retreat <span>↗</span></a><a href="mailto:hello@baledamai.com?subject=Ask%20about%20Sentul%20Eirene%20Villa">Sentul villa <span>↗</span></a><a href="mailto:hello@baledamai.com?subject=Ask%20about%20Denpasar%20Family%20Size%20Villa">Denpasar family villa <span>↗</span></a><a href="mailto:hello@baledamai.com?subject=Ask%20about%20Trust%20Building%20Jakarta">Jakarta workspace <span>↗</span></a><a href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Gunung%20Salak%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">gunung salak <span>↗</span></a><a href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Kerambitan%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">kerambitan recovery home <span>↗</span></a></div>
     </section>
   </main>
   <footer class="site-footer" aria-label="Bale Damai footer">
     <div class="footer-main">
       <div class="footer-brand"><a href="#home" aria-label="Bale Damai home"><img src="<?php echo esc_url( get_theme_file_uri( '/bale-damai-logo.png' ) ); ?>" alt="Bale Damai Community Centre" /></a><p>Thoughtful places to stay, gather, and feel at home across Jakarta and Bali.</p><a class="footer-whatsapp" href="https://wa.me/628131831832?text=Halo%20saya%20booking%20properti%20di%20Bale%20Damai%2C%20apakah%20bisa%20di%20bantu%3F" target="_blank" rel="noopener noreferrer" aria-label="Contact Bale Damai on WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path fill="#25D366" d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.3 29l6.8-1.8A12.8 12.8 0 1 0 16 3.2Z"/><path fill="#172d34" d="M23 19.1c-.4-.2-2.1-1-2.5-1.1-.3-.1-.6-.2-.8.2-.3.4-.9 1.1-1.1 1.3-.2.3-.4.3-.8.1-.4-.2-1.5-.6-2.9-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.6.1-.3 0-.5 0-.7l-1.1-2.7c-.3-.7-.6-.6-.8-.6h-.7c-.3 0-.7.1-1 .5-.4.4-1.3 1.3-1.3 3.1s1.3 3.5 1.5 3.8c.2.2 2.6 4 6.3 5.6.9.4 1.6.6 2.1.7.9.3 1.8.2 2.4.1.7-.1 2.1-.9 2.4-1.7.3-.8.3-1.5.2-1.7-.1-.2-.4-.3-.8-.5Z"/></svg><span>Contact us on WhatsApp</span><span aria-hidden="true">↗</span></a></div>
       <div class="footer-column"><h2>Explore</h2><a href="#stays">All properties</a><a href="#explore">Explore by place</a><a href="#contact">Contact us</a></div>
-      <div class="footer-column"><h2>Places to stay</h2><a href="https://www.trustbuildingjakarta.com/" target="_blank" rel="noopener noreferrer">Trust Building · Jakarta ↗</a><a href="https://www.airbnb.com/rooms/637115227838594568" target="_blank" rel="noopener noreferrer">Family villa · Denpasar ↗</a><a href="https://www.airbnb.com/rooms/958257224731528887" target="_blank" rel="noopener noreferrer">Hillside hideaway · Bali ↗</a></div>
+      <div class="footer-column"><h2>Places to stay</h2><a href="https://www.trustbuildingjakarta.com/" target="_blank" rel="noopener noreferrer">Trust Building · Jakarta ↗</a><a href="https://www.airbnb.com/rooms/637115227838594568" target="_blank" rel="noopener noreferrer">Family villa · Denpasar ↗</a><a href="https://www.airbnb.com/rooms/958257224731528887" target="_blank" rel="noopener noreferrer">Hillside hideaway · Bali ↗</a><a href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Gunung%20Salak%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">Gunung Salak Forest Glamping ↗</a><a href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Kerambitan%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">Kerambitan Recovery Home ↗</a></div>
     </div>
     <div class="footer-bottom"><span>Copyright © 2026 Budijaja Corporation. All rights reserved.</span><span>Bale Damai · Indonesia</span></div>
   </footer>
@@ -344,11 +361,52 @@
       filters.forEach(item => item.classList.toggle('selected', item === button));
       filterCards(button.dataset.filter, destination.value);
     }));
-    const airbnbDestinations = [
+    const arrivalInput = document.querySelector('#arrival');
+    const departureInput = document.querySelector('#departure');
+    const dateRangeTrigger = document.querySelector('#dateRangeTrigger');
+    const dateRangePopover = document.querySelector('#dateRangePopover');
+    const dateRangeSummary = document.querySelector('#dateRangeSummary');
+    const formatShortDate = value => value
+      ? new Intl.DateTimeFormat('en', { day:'numeric', month:'short', timeZone:'UTC' }).format(new Date(`${value}T00:00:00Z`))
+      : '';
+    function closeDateRangePopover() {
+      dateRangePopover.hidden = true;
+      dateRangeTrigger.setAttribute('aria-expanded', 'false');
+    }
+    function updateDateRangeSummary() {
+      const checkIn = arrivalInput.value;
+      const checkOut = departureInput.value;
+      if (checkIn && checkOut) dateRangeSummary.textContent = `${formatShortDate(checkIn)} – ${formatShortDate(checkOut)}`;
+      else if (checkIn) dateRangeSummary.textContent = `${formatShortDate(checkIn)} – Add check-out`;
+      else dateRangeSummary.textContent = 'Add dates';
+      dateRangeTrigger.classList.toggle('has-dates', Boolean(checkIn || checkOut));
+    }
+    dateRangeTrigger.addEventListener('click', () => {
+      dateRangePopover.hidden = !dateRangePopover.hidden;
+      dateRangeTrigger.setAttribute('aria-expanded', String(!dateRangePopover.hidden));
+    });
+    arrivalInput.addEventListener('change', () => {
+      departureInput.min = arrivalInput.value;
+      if (departureInput.value && departureInput.value < arrivalInput.value) departureInput.value = '';
+      updateDateRangeSummary();
+    });
+    departureInput.addEventListener('change', updateDateRangeSummary);
+    document.querySelector('#dateRangeDone').addEventListener('click', closeDateRangePopover);
+    document.addEventListener('pointerdown', event => {
+      if (!event.target.closest('.date-range-field')) closeDateRangePopover();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !dateRangePopover.hidden) {
+        closeDateRangePopover();
+        dateRangeTrigger.focus();
+      }
+    });    const propertyDestinations = [
       { name:'Jatiluwih Hillside Hideaway', area:'Jatiluwih, Bali', url:'https://www.airbnb.com/rooms/958257224731528887', matches:['jatiluwih hillside hideaway','jatiluwih hillside'] },
       { name:'Sentul Eirene Villa', area:'Sentul, West Java', url:'https://www.airbnb.com/rooms/1393993223925344101', matches:['sentul eirene villa'] },
       { name:'Denpasar Family Size Villa', area:'Denpasar, Bali', url:'https://www.airbnb.com/rooms/637115227838594568', matches:['denpasar family size villa'] },
-      { name:'Trust Building Jakarta', area:'Central Jakarta', url:'https://www.trustbuildingjakarta.com/', matches:['trust building jakarta'] }
+      { name:'Trust Building Jakarta', area:'Central Jakarta', url:'https://www.trustbuildingjakarta.com/', matches:['trust building jakarta'] },
+      { name:'Gunung Salak Forest Glamping', area:'Selemadeg, Tabanan, Bali', url:'https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Gunung%20Salak%2C%20boleh%20minta%20informasi%3F', matches:['gunung salak','forest glamping','selemadeg','tabanan'] },
+      { name:'Kerambitan Recovery Home', area:'Kerambitan, Tabanan, Bali', url:'https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Kerambitan%2C%20boleh%20minta%20informasi%3F', matches:['kerambitan','recovery home','tabanan'] }
     ];
     const destinationField = document.querySelector('.destination-field');
     const destinationSuggestions = document.querySelector('#propertySuggestions');
@@ -359,8 +417,8 @@
     function renderDestinationSuggestions() {
       const query = destination.value.trim().toLowerCase();
       const properties = query
-        ? airbnbDestinations.filter(property => property.name.toLowerCase().includes(query) || property.matches.some(name => name.includes(query)))
-        : airbnbDestinations;
+        ? propertyDestinations.filter(property => property.name.toLowerCase().includes(query) || property.matches.some(name => name.includes(query)))
+        : propertyDestinations;
       destinationSuggestions.replaceChildren();
       if (!properties.length) {
         const empty = document.createElement('div');
@@ -417,14 +475,30 @@
     document.querySelector('#searchForm').addEventListener('submit', event => {
       event.preventDefault();
       const query = destination.value.trim().toLowerCase();
-      const matchingProperties = airbnbDestinations.filter(property => property.name.toLowerCase().includes(query) || property.matches.some(place => query.includes(place)));
+      const matchingProperties = propertyDestinations.filter(property => property.name.toLowerCase().includes(query) || property.matches.some(place => query.includes(place)));
       const match = matchingProperties.length === 1 ? matchingProperties[0] : null;
       if (!match) {
-        showToast('Choose Jatiluwih Hillside, Sentul Eirene Villa, Denpasar Family Size Villa, or Trust Building Jakarta.');
+        showToast('Choose one of the Bale Damai properties shown in the suggestions.');
         destination.focus();
         return;
       }
-      window.location.assign(match.url);
+
+      const arrivalValue = document.querySelector('#arrival').value;
+      const departureValue = document.querySelector('#departure').value;
+      const guestValue = document.querySelector('#guests').value.trim();
+      const formatDate = (value, locale) => value
+        ? new Intl.DateTimeFormat(locale, { day:'numeric', month:'long', year:'numeric', timeZone:'UTC' }).format(new Date(`${value}T00:00:00Z`))
+        : '';
+      const englishDates = arrivalValue && departureValue
+        ? `${formatDate(arrivalValue, 'en')} to ${formatDate(departureValue, 'en')}`
+        : arrivalValue ? `${formatDate(arrivalValue, 'en')} (check-out date not selected)` : 'dates not selected';
+      const indonesianDates = arrivalValue && departureValue
+        ? `${formatDate(arrivalValue, 'id')} sampai ${formatDate(departureValue, 'id')}`
+        : arrivalValue ? `${formatDate(arrivalValue, 'id')} (tanggal check-out belum dipilih)` : 'tanggal belum dipilih';
+      const guests = guestValue ? `${guestValue} ${Number(guestValue) === 1 ? 'guest' : 'guests'}` : 'guest count not specified';
+      const guestsId = guestValue ? `${guestValue} tamu` : 'jumlah tamu belum disebutkan';
+      const message = `Hello Bale Damai, I would like to stay at ${match.name} from ${englishDates} with ${guests}. Is this available?\n\n(Halo Bale Damai, saya ingin menginap di ${match.name} pada ${indonesianDates} untuk ${guestsId}. Apakah tersedia?)`;
+      window.location.assign(`https://wa.me/628131831832?text=${encodeURIComponent(message)}`);
     });
     document.querySelectorAll('.heart').forEach(button => button.addEventListener('click', event => {
       event.stopPropagation(); const saved = button.classList.toggle('saved'); button.textContent = saved ? '♥' : '♡';
@@ -434,16 +508,60 @@
       const photos = JSON.parse(gallery.dataset.gallery);
       const image = gallery.querySelector('.card-photo');
       const dots = [...gallery.querySelectorAll('.mini-gallery-dot')];
+      const counter = gallery.querySelector('.mini-gallery-count');
+      const name = gallery.dataset.galleryName || 'Property';
+      let currentIndex = 0;
+      let startPoint = null;
+      gallery.tabIndex = 0;
+      const showPhoto = index => {
+        currentIndex = (index + photos.length) % photos.length;
+        image.src = photos[currentIndex];
+        image.alt = `${name} Airbnb photo ${currentIndex + 1} of ${photos.length}`;
+        if (counter) counter.textContent = `${currentIndex + 1} / ${photos.length}`;
+        dots.forEach((dot, dotIndex) => {
+          dot.classList.toggle('is-active', dotIndex === currentIndex);
+          dot.setAttribute('aria-pressed', String(dotIndex === currentIndex));
+        });
+      };
+      showPhoto(0);
       dots.forEach((dot, index) => dot.addEventListener('click', event => {
         event.stopPropagation();
-        image.src = photos[index];
-        image.alt = `Trust Building Jakarta workspace photo ${index + 1}`;
-        dots.forEach((item, itemIndex) => item.classList.toggle('is-active', itemIndex === index));
+        showPhoto(index);
       }));
+      gallery.addEventListener('pointerdown', event => {
+        if (event.target.closest('button') || (event.pointerType === 'mouse' && event.button !== 0)) return;
+        startPoint = { x:event.clientX, y:event.clientY };
+        gallery.setPointerCapture?.(event.pointerId);
+        gallery.classList.add('is-dragging');
+      });
+      gallery.addEventListener('pointerup', event => {
+        gallery.classList.remove('is-dragging');
+        if (!startPoint) return;
+        const dx = event.clientX - startPoint.x;
+        const dy = event.clientY - startPoint.y;
+        startPoint = null;
+        if (Math.abs(dx) > 38 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+          event.preventDefault();
+          event.stopPropagation();
+          gallery.dataset.swipedAt = String(Date.now());
+          showPhoto(currentIndex + (dx < 0 ? 1 : -1));
+        }
+      });
+      gallery.addEventListener('pointercancel', () => { startPoint = null; gallery.classList.remove('is-dragging'); });
+      gallery.addEventListener('keydown', event => {
+        if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          showPhoto(currentIndex + (event.key === 'ArrowRight' ? 1 : -1));
+        }
+      });
     });
     cards.forEach(card => {
       const open = () => window.open(card.dataset.url, '_blank', 'noopener');
-      card.addEventListener('click', event => { if (!event.target.closest('a,button,.card-rating')) open(); });
+      card.addEventListener('click', event => {
+        const gallery = event.target.closest('.photo-gallery');
+        if (gallery && Date.now() - Number(gallery.dataset.swipedAt || 0) < 500) { event.preventDefault(); return; }
+        if (!event.target.closest('a,button,.card-rating')) open();
+      });
       card.addEventListener('keydown', event => { if (event.target === card && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); open(); } });
     });
     const menuButton = document.querySelector('#menuButton');
