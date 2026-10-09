@@ -8,7 +8,7 @@
   <title>Bale Damai — Places to feel at home</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Berkshire+Swash&display=swap" rel="stylesheet" />
   <style>
     :root {
       --blue: #147ba8;
@@ -28,9 +28,9 @@
     body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
     button, input { font: inherit; }
     button { cursor: pointer; }
-    .topbar { height: 82px; padding: 0 clamp(22px, 5vw, 76px); display: flex; align-items: center; justify-content: space-between; background: rgba(251,252,249,.95); border-bottom: 1px solid rgba(28,43,50,.06); position: relative; z-index: 5; }
-    .brand { display:flex; align-items:center; width: 212px; height: 66px; overflow:hidden; flex: 0 0 auto; }
-    .brand img { display:block; width: 211px; max-width:none; height:auto; margin-left:-4px; }
+    .topbar { height: 82px; padding: 0 clamp(22px, 5vw, 76px); display: flex; align-items: center; justify-content: space-between; background: rgba(251,252,249,.96); border-bottom: 1px solid rgba(28,43,50,.06); position: sticky; top: 0; z-index: 1000; box-shadow:0 4px 18px rgba(22,58,71,.04); backdrop-filter:blur(12px); } body.admin-bar .topbar { top:32px; }
+    .brand { display:flex; align-items:center; width:212px; height:66px; overflow:hidden; flex:0 0 auto; }.brand img { display:block; width:211px; max-width:none; height:auto; margin-left:-4px; }.brand-wordmark,.footer-wordmark { display:inline-flex; flex-direction:column; align-items:flex-start; gap:3px; line-height:1; }.brand-name { font-family:var(--serif); font-size:28px; line-height:1.02; font-weight:600; letter-spacing:-.045em; color:var(--ink); }.brand-tagline { color:#718085; font-size:8px; line-height:1.2; font-weight:600; letter-spacing:.16em; text-transform:uppercase; }.brand-tagline:before { content:""; display:inline-block; width:13px; height:1px; margin:0 7px 3px 1px; background:var(--lime); }
+    
     .nav { display:flex; align-items:center; gap: 38px; height:100%; }
     .nav a { color: #647177; text-decoration:none; font-size:14px; font-weight:600; height:100%; display:flex; align-items:center; position:relative; transition:color .2s; }
     .nav a:hover, .nav a.active { color:var(--blue-deep); }
@@ -164,7 +164,7 @@
     .contact-links a:hover { background:var(--blue-pale); border-color:#b8d4dc; }
     .site-footer { background:#172d34; color:#f6f8f3; padding:48px clamp(22px,5vw,76px) 0; }
     .footer-main { max-width:1296px; margin:0 auto; padding-bottom:35px; display:grid; grid-template-columns:1.35fr .7fr 1fr; gap:48px; }
-    .footer-brand img { width:188px; height:auto; display:block; clip-path:inset(6.7% 3.3% 11.1% 3.3% round 14px); filter:drop-shadow(0 4px 10px rgba(0,0,0,.15)); }
+    .footer-logo { display:inline-flex; text-decoration:none; filter:drop-shadow(0 3px 8px rgba(0,0,0,.16)); }.footer-brand-name { font-family:"Berkshire Swash", var(--serif); color:#f4f7f4; font-size:36px; line-height:1.1; font-weight:400; letter-spacing:0; }.footer-tagline { color:#b9c8ca; font-family:var(--sans); font-size:9px; font-weight:600; line-height:1.2; letter-spacing:.16em; text-transform:uppercase; }.footer-tagline:before { content:""; display:inline-block; width:14px; height:1px; margin:0 7px 3px 1px; background:var(--lime); }
     .footer-brand p { max-width:310px; margin:17px 0 19px; color:#c3d0d1; font-size:12px; line-height:1.7; }
     .footer-whatsapp { display:inline-flex; align-items:center; gap:9px; padding:10px 13px; border:1px solid rgba(255,255,255,.25); border-radius:4px; color:#fff; text-decoration:none; font-size:12px; font-weight:600; box-shadow:0 3px 12px rgba(0,0,0,.14); transition:background .2s,border-color .2s,box-shadow .2s; }
     .footer-whatsapp:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.55); box-shadow:0 5px 16px rgba(0,0,0,.2); }
@@ -187,14 +187,14 @@
       .listing-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
     }
     @media (max-width:700px) {
-      .topbar { height:70px; padding:0 18px; }.brand { width:168px; height:58px; }.brand img { width:177px; margin-left:-2px; }.top-actions { width:auto; }.host-link { display:none; }.menu-button { display:block; }
+      .topbar { height:70px; padding:0 14px; } body.admin-bar .topbar { top:46px; }.brand { width:136px; height:58px; }.brand img { width:145px; margin-left:-3px; }.top-actions { width:auto; gap:2px; }.host-link { display:inline-flex; padding:8px 8px; font-size:10px; white-space:nowrap; }.menu-button { display:block; padding:6px; font-size:20px; }
       .nav { display:none; position:absolute; top:69px; left:0; right:0; height:auto; background:var(--paper); padding:10px 21px 18px; border-bottom:1px solid var(--line); flex-direction:column; align-items:stretch; gap:0; box-shadow:0 12px 18px rgba(20,45,50,.07); }
       .nav.open { display:flex; }.nav a { height:auto; padding:13px 2px; border-bottom:1px solid var(--line); }.nav a.active:after { display:none; }
       .hero { padding:36px 20px 35px; }.hero-inner { display:flex; flex-direction:column; align-items:stretch; gap:28px; }.hero-copy { font-size:14px; }.hero-visual { margin:0 7px 0 12px; }.hero-photo-stage { height:280px; }.hero-rating { gap:6px; padding:9px 10px; }.hero-rating-stars { font-size:11px; letter-spacing:0; }.hero-rating-count { font-size:9px; }.hero-rating-cta { font-size:9px; }.accent-dot { width:62px; height:62px; right:-15px; top:-15px; }
       .search-panel { margin-top:23px; grid-template-columns:minmax(0,1fr) minmax(0,1fr) 52px; gap:0; padding:7px; }.search-field { padding:7px 9px; }.search-field:first-child { grid-column:1 / -1; border-right:0; border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:5px; }.search-field:nth-child(3) { border-right:0; }.date-range-popover { left:0; transform:none; width:min(340px, calc(100vw - 48px)); }.date-range-inputs { grid-template-columns:1fr; gap:10px; }.search-submit { width:42px; height:42px; }
       .section { padding:38px 20px; }.section-head { align-items:flex-start; }.section-head .text-link { margin-top:14px; }.listing-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px 12px; }.card-photo-wrap { border-radius:3px 21px 3px 3px; aspect-ratio:1/1; }.card-tag { left:8px; top:8px; font-size:8px; padding:6px 7px; }.heart { right:8px; top:8px; width:30px; height:30px; }.card-title { font-size:12px; }.card-location,.card-meta { font-size:10px; }.card-price { font-size:11px; }
       .explore-section { margin:0 0 34px; padding:22px 20px 0; }.explore-head { align-items:flex-start; }.gallery-tools { display:none; }.place-rail { grid-auto-columns:minmax(190px,68vw); gap:12px; }.place-photo { height:145px; }.collection-grid { grid-template-columns:1fr; gap:14px; margin-top:30px; }.collection-collage { height:220px; }.collection-copy { padding:17px; }.contact-band { margin:0 20px 28px; padding:25px 22px; flex-direction:column; align-items:flex-start; gap:19px; }.contact-links { justify-content:flex-start; }
-      .site-footer { padding:34px 22px 0; }.footer-main { grid-template-columns:1fr 1fr; gap:30px 20px; padding-bottom:27px; }.footer-brand { grid-column:1 / -1; }.footer-brand img { width:170px; }.footer-bottom { flex-direction:column; gap:6px; padding:15px 0 18px; }
+      .site-footer { padding:34px 22px 0; }.footer-main { grid-template-columns:1fr 1fr; gap:30px 20px; padding-bottom:27px; }.footer-brand { grid-column:1 / -1; }.footer-brand-name { font-size:29px; }.footer-bottom { flex-direction:column; gap:6px; padding:15px 0 18px; }
     }
     @media (max-width:390px) { .listing-grid { grid-template-columns:1fr; }.card-photo-wrap { aspect-ratio:1.28/1; }.section-head .text-link { font-size:11px; } }
   </style>
@@ -204,13 +204,13 @@
 <body>
 <?php wp_body_open(); ?>
   <header class="topbar">
-    <a class="brand" href="#home" aria-label="Bale Damai home"><img src="<?php echo esc_url( get_theme_file_uri( '/bale-damai-logo.png' ) ); ?>" alt="Bale Damai Community Centre" /></a>
+    <a class="brand" href="#home" aria-label="Bale Damai Community Centre home"><img src="<?php echo esc_url( get_theme_file_uri( '/bale-damai-logo.png' ) ); ?>" alt="Bale Damai Community Centre" /></a>
     <nav class="nav" id="nav" aria-label="Main navigation">
       <a class="active" href="#stays">Places to stay</a>
       <a href="#stays">Our properties</a>
       <a href="#explore">Explore by place</a>
     </nav>
-    <div class="top-actions"><a class="host-link" href="#contact">List your property</a><button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false">☰</button></div>
+    <div class="top-actions"><a class="host-link" href="https://wa.me/628131831832?text=Hello%20Bale%20Damai%2C%20I%20would%20like%20to%20ask%20about%20your%20properties%20and%20get%20help%20choosing%20the%20right%20one.%20Can%20you%20assist%20me%3F%0A%0A(Halo%20Bale%20Damai%2C%20saya%20ingin%20bertanya%20tentang%20properti%20yang%20tersedia%20dan%20dibantu%20memilih%20yang%20sesuai.%20Apakah%20bisa%20dibantu%3F)" target="_blank" rel="noopener noreferrer">Contact Bale Damai</a><button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false">☰</button></div>
   </header>
   <main id="home">
     <section class="hero">
@@ -318,7 +318,7 @@
   </main>
   <footer class="site-footer" aria-label="Bale Damai footer">
     <div class="footer-main">
-      <div class="footer-brand"><a href="#home" aria-label="Bale Damai home"><img src="<?php echo esc_url( get_theme_file_uri( '/bale-damai-logo.png' ) ); ?>" alt="Bale Damai Community Centre" /></a><p>Thoughtful places to stay, gather, and feel at home across Jakarta and Bali.</p><a class="footer-whatsapp" href="https://wa.me/628131831832?text=Halo%20saya%20booking%20properti%20di%20Bale%20Damai%2C%20apakah%20bisa%20di%20bantu%3F" target="_blank" rel="noopener noreferrer" aria-label="Contact Bale Damai on WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path fill="#25D366" d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.3 29l6.8-1.8A12.8 12.8 0 1 0 16 3.2Z"/><path fill="#172d34" d="M23 19.1c-.4-.2-2.1-1-2.5-1.1-.3-.1-.6-.2-.8.2-.3.4-.9 1.1-1.1 1.3-.2.3-.4.3-.8.1-.4-.2-1.5-.6-2.9-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.6.1-.3 0-.5 0-.7l-1.1-2.7c-.3-.7-.6-.6-.8-.6h-.7c-.3 0-.7.1-1 .5-.4.4-1.3 1.3-1.3 3.1s1.3 3.5 1.5 3.8c.2.2 2.6 4 6.3 5.6.9.4 1.6.6 2.1.7.9.3 1.8.2 2.4.1.7-.1 2.1-.9 2.4-1.7.3-.8.3-1.5.2-1.7-.1-.2-.4-.3-.8-.5Z"/></svg><span>Contact us on WhatsApp</span><span aria-hidden="true">↗</span></a></div>
+      <div class="footer-brand"><a class="footer-logo" href="#home" aria-label="Bale Damai Community Centre home"><span class="footer-wordmark"><span class="footer-brand-name">Bale Damai</span><span class="footer-tagline">Community Centre</span></span></a><p>Thoughtful places to stay, gather, and feel at home across Jakarta and Bali.</p><a class="footer-whatsapp" href="https://wa.me/628131831832?text=Halo%20saya%20booking%20properti%20di%20Bale%20Damai%2C%20apakah%20bisa%20di%20bantu%3F" target="_blank" rel="noopener noreferrer" aria-label="Contact Bale Damai on WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path fill="#25D366" d="M16 3.2A12.7 12.7 0 0 0 5.1 22.4L3.3 29l6.8-1.8A12.8 12.8 0 1 0 16 3.2Z"/><path fill="#172d34" d="M23 19.1c-.4-.2-2.1-1-2.5-1.1-.3-.1-.6-.2-.8.2-.3.4-.9 1.1-1.1 1.3-.2.3-.4.3-.8.1-.4-.2-1.5-.6-2.9-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.6.1-.3 0-.5 0-.7l-1.1-2.7c-.3-.7-.6-.6-.8-.6h-.7c-.3 0-.7.1-1 .5-.4.4-1.3 1.3-1.3 3.1s1.3 3.5 1.5 3.8c.2.2 2.6 4 6.3 5.6.9.4 1.6.6 2.1.7.9.3 1.8.2 2.4.1.7-.1 2.1-.9 2.4-1.7.3-.8.3-1.5.2-1.7-.1-.2-.4-.3-.8-.5Z"/></svg><span>Contact us on WhatsApp</span><span aria-hidden="true">↗</span></a></div>
       <div class="footer-column"><h2>Explore</h2><a href="#stays">All properties</a><a href="#explore">Explore by place</a><a href="#contact">Contact us</a></div>
       <div class="footer-column"><h2>Places to stay</h2><a href="https://www.trustbuildingjakarta.com/" target="_blank" rel="noopener noreferrer">Trust Building · Jakarta ↗</a><a href="https://www.airbnb.com/rooms/637115227838594568" target="_blank" rel="noopener noreferrer">Family villa · Denpasar ↗</a><a href="https://www.airbnb.com/rooms/958257224731528887" target="_blank" rel="noopener noreferrer">Hillside hideaway · Bali ↗</a><a href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Gunung%20Salak%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">Gunung Salak Forest Glamping ↗</a><a href="https://wa.me/628131831832?text=Halo%20saya%20tertarik%20dengan%20Bale%20Damai%20Kerambitan%2C%20boleh%20minta%20informasi%3F" target="_blank" rel="noopener noreferrer">Kerambitan Recovery Home ↗</a></div>
     </div>
