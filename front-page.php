@@ -145,6 +145,7 @@
     @media (max-width:390px) { .listing-grid { grid-template-columns:1fr; }.card-photo-wrap { aspect-ratio:1.28/1; }.section-head .text-link { font-size:11px; } }
   </style>
   <?php wp_head(); ?>
+<link rel="icon" type="image/svg+xml" href="<?php echo esc_url( get_theme_file_uri( '/assets/favicon.svg' ) ); ?>" />
 </head>
 <body>
 <?php wp_body_open(); ?>
